@@ -1,7 +1,7 @@
-var bcrypt from 'bcrypt'
-var mongoose from 'mongoose'
+var bcrypt = require('bcrypt')
+var mongoose = require('mongoose')
 
-var User from '../models/User'
+var User = require('../models/User')
 
 module.exports.create = (req, res) => {
   let data = req.body
@@ -42,7 +42,7 @@ module.exports.readBy = (req, res) => {
   })
 }
 
-module.exports.getUser = (req, res) => {
+module.exports.user = (req, res) => {
   if (req.user) {
     let id = req.user
     User.findOne({_id:id}).exec((err, user) => {
