@@ -7,17 +7,31 @@ let fs = require('fs');
 
 chai.use(chaiHttp);
 
-describe('User',()=>{
+describe('User',() => {
 
-    before((done)=>{
-        done();
+    before((done) => {
+        User.remove({}).then(() => {
+            const user = {
+                email: "marco@gmail.com",
+                password: "123456",
+                name: "Marco",
+                lastname: "lastname"
+            }
+    
+            chai.request(server)
+                .post("/user")
+                .set('Accept', 'application/json')
+                .set('Content-Type', 'application/json')
+                .send(user)
+                .end((err, res) => {
+                    done();
+                })
+        })
     })
 
     describe('test', () => {
-
-        it('it should LOG a user',function (done) {
-
-            let user = {
+        it('it should login an user',function (done) {
+            const user = {
                 email: 'marco@gmail.com',
                 password: '123456'
             };
@@ -27,15 +41,13 @@ describe('User',()=>{
                 .set('Accept', 'application/json')
                 .set('Content-Type', 'application/json')
                 .send(user)
-                .end((err,res)=>{
-                    console.log(res.body)
+                .end((err,res) => {
                     res.should.have.status(200);
                     res.should.be.a('object');
                     res.body.should.have.property('_id');
                     res.body.should.have.property('name');
                     res.body.should.have.property('email');
                     res.body.should.have.property('lastname');
-                    console.log(res.status);
                     done();
                 });
         });
