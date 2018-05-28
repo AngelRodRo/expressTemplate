@@ -21,7 +21,7 @@ module.exports.create = (req, res) => {
 }
 
 module.exports.login = function (req,res) {
-  const { email } = req.body
+  const { email, password} = req.body
   User.findOne({ email })
     .then((user, err) => {
       if (err) {
@@ -32,7 +32,7 @@ module.exports.login = function (req,res) {
         return res.sendStatus(404)
       }
       
-      if (bcrypt.compareSync(data.password, user.password)) { 
+      if (bcrypt.compareSync(password, user.password)) { 
         return res.json(user)
       }
       return res.sendStatus(401)
